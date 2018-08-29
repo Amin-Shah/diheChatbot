@@ -1,5 +1,6 @@
 import React from 'react'
 import AdmissionForm from './AdmissionForm'
+import {isEmpty} from 'validator'
 
 let data =
     [
@@ -17,6 +18,14 @@ let data =
             id: 'name',
             user: true,
             trigger: '3',
+            validator: (value) => {
+                if (isEmpty(value)) {
+                    return 'Enter name';
+                } else if (parseInt(value)) {
+                    return 'value must be a number';
+                }
+                return true;
+            },
         },
         {
             id: '3',
@@ -40,12 +49,16 @@ let data =
             user: true,
             trigger: '7',
             validator: (value) => {
-                if (isNaN(value)) {
+                if (isEmpty(value)) {
+                    return 'Enter age';
+                } else if (isNaN(value)) {
                     return 'value must be a number';
                 } else if (value < 0) {
                     return 'value must be positive';
-                } else if (value > 120) {
-                    return `${value}? Come on!`;
+                } else if (value < 18){
+                    return 'You are too young!!!';
+                } else if (value > 40) {
+                    return `${value}? You are too Old!!!`;
                 }
 
                 return true;
@@ -86,16 +99,39 @@ let data =
             id: 'qualification',
             user: true,
             trigger: '10',
+            validator: (value) => {
+                if (isEmpty(value)) {
+                    return 'Enter qualification';
+                } else if (parseInt(value)) {
+                    return 'value must be a number';
+                }
+                return true;
+            },
         },
         {
             id: '10',
             message: 'Please mention your percentage?',
-            trigger: 'percentage',
+            trigger: 'percentage'
         },
         {
             id: 'percentage',
             user: true,
             trigger: '11',
+            validator: (value) => {
+                if (isEmpty(value)) {
+                    return 'provide percentage';
+                } else if (isNaN(value)) {
+                    return 'value must be a number';
+                }  else if (value < 0) {
+                    return 'value must be positive';
+                } else if (value < 40){
+                    return 'You are not allowed to take addmission';
+                } else if (value > 100) {
+                    return `${value}? Come on!!!`;
+                }
+
+                return true;
+            },
         },
         {
             id: '11',

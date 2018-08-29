@@ -5,7 +5,8 @@
   "dependencies": {
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-simple-chatbot": "^0.1.10"
+    "react-simple-chatbot": "^0.1.10",
+    "validator": "^10.7.0"
   },
   "devDependencies": {
     "gh-pages": "^1.2.0",
@@ -16,7 +17,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy" : "npm run build&&gh-pages -d build"
+    "deploy": "npm run build&&gh-pages -d build"
   },
   "homepage": "https://amin-shah.github.io/diheChatbot"
 }
