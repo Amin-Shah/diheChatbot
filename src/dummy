@@ -1,0 +1,263 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ChatBot from 'react-simple-chatbot';
+
+class Review extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: '',
+      gender: '',
+      age: '',
+      programs: '',
+      shift: '',
+      qualification: '',
+      percentage: ''
+    };
+  }
+
+  componentWillMount() {
+    const { steps } = this.props;
+    const { name, gender, age, programs, shift, qualification, percentage } = steps;
+
+    this.setState({ name, gender, age, programs, shift, qualification, percentage });
+  }
+
+  render() {
+    const { name, gender, age, programs, shift, qualification, percentage } = this.state;
+    return (
+      <div style={{ width: '100%' }}>
+        <h3>Summary</h3>
+        <table>
+          <tbody>
+            <tr>
+              <td>Name</td>
+              <td>{name.value}</td>
+            </tr>
+            <tr>
+              <td>Gender</td>
+              <td>{gender.value}</td>
+            </tr>
+            <tr>
+              <td>Age</td>
+              <td>{age.value}</td>
+            </tr>
+            <tr>
+              <td>Programs</td>
+              <td>{programs.value}</td>
+            </tr>
+            <tr>
+              <td>Shift</td>
+              <td>{shift.value}</td>
+            </tr>
+            <tr>
+              <td>Qualification</td>
+              <td>{qualification.value}</td>
+            </tr>
+            <tr>
+              <td>Percentage</td>
+              <td>{percentage.value}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
+
+Review.propTypes = {
+  steps: PropTypes.object,
+};
+
+Review.defaultProps = {
+  steps: undefined,
+};
+
+class SimpleForm extends Component {
+  render() {
+    const style = {
+      color: 'red',
+      width: '700px',
+      marginLeft: '140px'
+    }
+    return (
+      <ChatBot 
+        style={style}
+        steps={[
+          {
+            id: '1',
+            message: 'What is your name?',
+            trigger: 'name',
+          },
+          {
+            id: 'name',
+            user: true,
+            trigger: '3',
+          },
+          {
+            id: '3',
+            message: 'Hi {previousValue}! What is your gender?',
+            trigger: 'gender',
+          },
+          {
+            id: 'gender',
+            options: [
+              { value: 'male', label: 'Male', trigger: '5' },
+              { value: 'female', label: 'Female', trigger: '5' },
+            ],
+          },
+          {
+            id: '5',
+            message: 'How old are you?',
+            trigger: 'age',
+          },
+          {
+            id: 'age',
+            user: true,
+            trigger: '7',
+            validator: (value) => {
+              if (isNaN(value)) {
+                return 'value must be a number';
+              } else if (value < 0) {
+                return 'value must be positive';
+              } else if (value > 120) {
+                return `${value}? Come on!`;
+              }
+
+              return true;
+            },
+          }, 
+          {
+            id: '7',
+            message: 'Which Program would you like to select?',
+            trigger: 'programs',
+          },
+          {
+            id: 'programs',
+            options: [
+              { value: 'bscs', label: 'BSCS', trigger: '8' },
+              { value: 'bba', label: 'BBA', trigger: '8' },
+              { value: 'bcom', label: 'BCOM', trigger: '8' },
+              { value: 'BEd', label: 'BEd', trigger: '8' },
+            ],
+          },
+          {
+            id: '8',
+            message: 'Which shift do you want to select?',
+            trigger: 'shift',
+          },
+          {
+            id: 'shift',
+            options: [
+              { value: 'morning', label: 'Morning', trigger: '9' },
+              { value: 'evening', label: 'Evening', trigger: '9' }
+            ],
+          },
+          {
+            id: '9',
+            message: 'Please mention your previous qualifications ?',
+            trigger: 'qualification',
+          },
+          {
+            id: 'qualification',
+            user: true,
+            trigger: '10',
+          },
+          {
+            id: '10',
+            message: 'Please mention your percentage ?',
+            trigger: 'percentage',
+          },
+          {
+            id: 'percentage',
+            user: true,
+            trigger: '11',
+          },
+          {
+            id: '11',
+            message: 'Great! Check out your summary',
+            trigger: 'review',
+          },
+          {
+            id: 'review',
+            component: <Review />,
+            asMessage: true,
+            trigger: 'update',
+          },
+          {
+            id: 'update',
+            message: 'Would you like to update some field?',
+            trigger: 'update-question',
+          },
+          {
+            id: 'update-question',
+            options: [
+              { value: 'yes', label: 'Yes', trigger: 'update-yes' },
+              { value: 'no', label: 'No', trigger: 'end-message' },
+            ],
+          },
+          {
+            id: 'update-yes',
+            message: 'What field would you like to update?',
+            trigger: 'update-fields',
+          },
+          {
+            id: 'update-fields',
+            options: [
+              { value: 'name', label: 'Name', trigger: 'update-name' },
+              { value: 'gender', label: 'Gender', trigger: 'update-gender' },
+              { value: 'age', label: 'Age', trigger: 'update-age' },
+              { value: 'programs', label: 'Programs', trigger: 'update-programs' },
+              { value: 'shift', label: 'Shift', trigger: 'update-shift' },
+              { value: 'qualification', label: 'Qualification', trigger: 'update-qualification' },
+              { value: 'percentage', label: 'percentage', trigger: 'update-percentage' },
+            ],
+          },
+          {
+            id: 'update-name',
+            update: 'name',
+            trigger: '7',
+          },
+          {
+            id: 'update-gender',
+            update: 'gender',
+            trigger: '7',
+          },
+          {
+            id: 'update-age',
+            update: 'age',
+            trigger: '7',
+          },
+          {
+            id: 'update-programs',
+            update: 'programs',
+            trigger: '7',
+          },
+          {
+            id: 'update-shift',
+            update: 'shift',
+            trigger: '7',
+          },
+          {
+            id: 'update-qualification',
+            update: 'qualification',
+            trigger: '7',
+          },
+          {
+            id: 'update-percentage',
+            update: 'percentage',
+            trigger: '7',
+          },
+          {
+            id: 'end-message',
+            message: 'Thanks! Your data was submitted successfully!',
+            end: true,
+          },
+        ]}
+      />
+    );
+  }
+}
+
+export default SimpleForm;
